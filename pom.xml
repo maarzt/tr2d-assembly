@@ -43,43 +43,27 @@
 		</dependency>
 	</dependencies>
 	
-<!-- 	<build>
-		<resources>
-			<resource>
-				<directory>${basedir}/src/main/resources</directory>
-			</resource>
-			<resource>
-				<directory>${project.build.sourceDirectory}</directory>
-			</resource>
-		</resources>
-		<testResources>
-			<testResource>
-				<directory>${basedir}/src/test/resources</directory>
-			</testResource>
-			<testResource>
-				<directory>${project.build.testSourceDirectory}</directory>
-			</testResource>
-		</testResources>
+	<build>
 		<plugins>
 			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>exec-maven-plugin</artifactId>
+				<groupId>com.googlecode.addjars-maven-plugin</groupId>
+				<artifactId>addjars-maven-plugin</artifactId>
+				<version>1.0.5</version>
 				<executions>
 					<execution>
 						<goals>
-							<goal>java</goal>
+							<goal>add-jars</goal>
 						</goals>
+						<configuration>
+							<resources>
+								<resource>
+									<directory>${basedir}/lib</directory>
+								</resource>
+							</resources>
+						</configuration>
 					</execution>
 				</executions>
-				<configuration>
-					<mainClass>Tr2dApplication</mainClass>
-				</configuration>
-			</plugin>
-		</plugins>
-	</build>
- -->
-	<build>
-		<plugins>
+			</plugin> 
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-shade-plugin</artifactId>
@@ -93,7 +77,7 @@
 						<configuration>
 							<transformers>
 								<transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-									<mainClass>com.indago.tr2d.app.garcia.Tr2dApplication</mainClass>
+									<mainClass>com.indago.Main</mainClass>
 								</transformer>
 							</transformers>
 						</configuration>
