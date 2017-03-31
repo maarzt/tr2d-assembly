@@ -1,10 +1,16 @@
 import org.scijava.plugin.Plugin;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.Enumeration;
 
 /**
@@ -13,11 +19,24 @@ import java.util.Enumeration;
 public class PrintSciJavaPluginJson {
 
 	public static void main(String... args) throws IOException {
+		try (Writer writer = openOutputFile()) {
+			writeCollectedJson(writer);
+		}
+		catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	private static BufferedWriter openOutputFile() throws FileNotFoundException {
+		return new BufferedWriter(new OutputStreamWriter(new FileOutputStream(Plugin.class.getName()), StandardCharsets.UTF_8));
+	}
+
+	private static void writeCollectedJson(Writer writer) throws IOException {
 		ClassLoader loader = Thread.currentThread().getContextClassLoader();
 		Enumeration<URL> urls = loader.getResources("META-INF/json/" + Plugin.class.getName());
 		while(urls.hasMoreElements()) {
 			URL url = urls.nextElement();
-			System.out.print(getStringFromInputStream(url.openStream()));
+			writer.write(getStringFromInputStream(url.openStream()));
 		}
 	}
 
